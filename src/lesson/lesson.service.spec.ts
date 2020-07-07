@@ -19,6 +19,11 @@ describe('LessonService', () => {
           useValue: {
             create: jest.fn(),
             save: jest.fn().mockReturnValue('new cat'),
+            findOne: jest.fn().mockReturnValue({
+              name: 'findOneCat',
+              startDate: 'findOneStart',
+              endDate: 'findOneEnd',
+            }),
           },
         },
       ],
@@ -32,6 +37,21 @@ describe('LessonService', () => {
 
   it('should be defined', () => {
     expect(lessonService).toBeDefined();
+  });
+
+  describe('getLesson', () => {
+    it('calls lessonRepository.findOne() and returns a lesson', async () => {
+      const result = await lessonService.getLesson('random id');
+
+      expect(lessonRepository.findOne).toHaveBeenCalledWith({
+        id: 'random id',
+      });
+      expect(result).toEqual({
+        name: 'findOneCat',
+        startDate: 'findOneStart',
+        endDate: 'findOneEnd',
+      });
+    });
   });
 
   describe('createLesson', () => {

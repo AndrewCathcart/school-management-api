@@ -1,8 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LessonResolver } from './lesson.resolver';
 import { LessonService } from './lesson.service';
-import { execute } from 'graphql';
-import { create } from 'domain';
+
+const mockLesson = {
+  name: 'TestName',
+  startDate: 'TestStartDate',
+  endDate: 'TestEndDate',
+};
 
 describe('LessonResolver', () => {
   let lessonResolver: LessonResolver;
@@ -14,7 +18,8 @@ describe('LessonResolver', () => {
         {
           provide: LessonService,
           useValue: {
-            createLesson: jest.fn().mockReturnValue('new cat'),
+            createLesson: jest.fn().mockReturnValue(mockLesson),
+            getLesson: jest.fn().mockReturnValue(mockLesson),
           },
         },
       ],
@@ -25,6 +30,14 @@ describe('LessonResolver', () => {
 
   it('should be defined', () => {
     expect(lessonResolver).toBeDefined();
+  });
+
+  describe('getLesson', () => {
+    it('should call lessonService.getLesson', () => {
+      const result = lessonResolver.getLesson('unimportant-id');
+
+      expect(result).toEqual(mockLesson);
+    });
   });
 
   describe('createLesson', () => {
@@ -41,7 +54,7 @@ describe('LessonResolver', () => {
         createLessonDto.endDate,
       );
 
-      expect(result).toEqual('new cat');
+      expect(result).toEqual(mockLesson);
     });
   });
 });
