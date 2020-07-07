@@ -41,7 +41,7 @@ describe('LessonService', () => {
         startDate: 'TestStartDate',
         endDate: 'TestEndDate',
       };
-      const mockId = uuid.mockImplementation(() => 'testid');
+      uuid.mockReturnValue('testid');
 
       const result = await lessonService.createLesson(
         createLessonDto.name,
@@ -50,11 +50,12 @@ describe('LessonService', () => {
       );
 
       expect(lessonRepository.create).toHaveBeenCalledWith({
-        id: mockId,
+        id: 'testid',
         name: createLessonDto.name,
         startDate: createLessonDto.startDate,
         endDate: createLessonDto.endDate,
       });
+      expect(lessonRepository.save).toHaveBeenCalledTimes(1);
       expect(result).toEqual('new cat');
     });
   });
