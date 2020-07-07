@@ -56,24 +56,20 @@ describe('LessonService', () => {
 
   describe('createLesson', () => {
     it('calls lessonRepository.create() and returns the result', async () => {
-      const createLessonDto = {
+      const createLessonInput = {
         name: 'TestName',
         startDate: 'TestStartDate',
         endDate: 'TestEndDate',
       };
       uuid.mockReturnValue('testid');
 
-      const result = await lessonService.createLesson(
-        createLessonDto.name,
-        createLessonDto.startDate,
-        createLessonDto.endDate,
-      );
+      const result = await lessonService.createLesson(createLessonInput);
 
       expect(lessonRepository.create).toHaveBeenCalledWith({
         id: 'testid',
-        name: createLessonDto.name,
-        startDate: createLessonDto.startDate,
-        endDate: createLessonDto.endDate,
+        name: createLessonInput.name,
+        startDate: createLessonInput.startDate,
+        endDate: createLessonInput.endDate,
       });
       expect(lessonRepository.save).toHaveBeenCalledTimes(1);
       expect(result).toEqual('new cat');
