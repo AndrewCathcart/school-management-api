@@ -1,3 +1,5 @@
+# school-management-api [![CircleCI](https://circleci.com/gh/AndrewCathcart/school-management-api.svg?style=svg)](https://app.circleci.com/pipelines/github/AndrewCathcart/school-management-api)
+
 ## Description
 
 This repo contains the backend code for a school-management app in order to practice;
