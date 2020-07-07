@@ -20,6 +20,7 @@ describe('LessonResolver', () => {
           useValue: {
             createLesson: jest.fn().mockReturnValue(mockLesson),
             getLesson: jest.fn().mockReturnValue(mockLesson),
+            getLessons: jest.fn().mockReturnValue([mockLesson]),
           },
         },
       ],
@@ -30,6 +31,14 @@ describe('LessonResolver', () => {
 
   it('should be defined', () => {
     expect(lessonResolver).toBeDefined();
+  });
+
+  describe('getLessons', () => {
+    it('should call lessonService.getLessons', () => {
+      const result = lessonResolver.getLessons();
+
+      expect(result).toEqual([mockLesson]);
+    });
   });
 
   describe('getLesson', () => {
@@ -48,11 +57,7 @@ describe('LessonResolver', () => {
         endDate: 'TestEndDate',
       };
 
-      const result = lessonResolver.createLesson(
-        createLessonDto.name,
-        createLessonDto.startDate,
-        createLessonDto.endDate,
-      );
+      const result = lessonResolver.createLesson(createLessonDto);
 
       expect(result).toEqual(mockLesson);
     });

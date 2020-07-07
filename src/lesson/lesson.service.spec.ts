@@ -4,7 +4,20 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Lesson } from './lesson.entity';
 import { Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
+import { CreateLessonInput } from './lesson.input';
 jest.mock('uuid');
+
+const findOneMock = {
+  name: 'findOneCat',
+  startDate: 'findOneStart',
+  endDate: 'findOneEnd',
+};
+
+const findMock = [
+  {
+    findOneMock,
+  },
+];
 
 describe('LessonService', () => {
   let lessonService: LessonService;
@@ -19,11 +32,8 @@ describe('LessonService', () => {
           useValue: {
             create: jest.fn(),
             save: jest.fn().mockReturnValue('new cat'),
-            findOne: jest.fn().mockReturnValue({
-              name: 'findOneCat',
-              startDate: 'findOneStart',
-              endDate: 'findOneEnd',
-            }),
+            findOne: jest.fn().mockReturnValue(findOneMock),
+            find: jest.fn().mockReturnValue(findMock),
           },
         },
       ],
@@ -37,6 +47,15 @@ describe('LessonService', () => {
 
   it('should be defined', () => {
     expect(lessonService).toBeDefined();
+  });
+
+  describe('getLessons', () => {
+    it('calls lessonRepository.find() and returns an array of lessons', async () => {
+      const result = await lessonService.getLessons();
+
+      expect(lessonRepository.find).toHaveBeenCalled();
+      expect(result).toEqual(findMock);
+    });
   });
 
   describe('getLesson', () => {
@@ -56,13 +75,12 @@ describe('LessonService', () => {
 
   describe('createLesson', () => {
     it('calls lessonRepository.create() and returns the result', async () => {
-      const createLessonInput = {
+      const createLessonInput: CreateLessonInput = {
         name: 'TestName',
         startDate: 'TestStartDate',
         endDate: 'TestEndDate',
       };
       uuid.mockReturnValue('testid');
-
       const result = await lessonService.createLesson(createLessonInput);
 
       expect(lessonRepository.create).toHaveBeenCalledWith({
