@@ -8,6 +8,17 @@ import { CreateStudentInput } from './student.input';
 
 jest.mock('uuid');
 
+const findOneMock = {
+  firstName: 'Andy',
+  lastName: 'Cathcart',
+};
+
+const findMock = [
+  {
+    findOneMock,
+  },
+];
+
 describe('StudentService', () => {
   let studentService: StudentService;
   let studentRepository: Repository<Student>;
@@ -21,6 +32,8 @@ describe('StudentService', () => {
           useValue: {
             create: jest.fn(),
             save: jest.fn().mockReturnValue('new student'),
+            findOne: jest.fn().mockReturnValue(findOneMock),
+            find: jest.fn().mockReturnValue(findMock),
           },
         },
       ],
@@ -34,6 +47,29 @@ describe('StudentService', () => {
 
   it('should be defined', () => {
     expect(studentService).toBeDefined();
+  });
+
+  describe('getStudents', () => {
+    it('calls studentRepository.find() and returns an array of students', async () => {
+      const result = await studentService.getStudents();
+
+      expect(studentRepository.find).toHaveBeenCalled();
+      expect(result).toEqual(findMock);
+    });
+  });
+
+  describe('getStudent', () => {
+    it('calls studentRepository.findOne() and returns a student', async () => {
+      const result = await studentService.getStudent('random id');
+
+      expect(studentRepository.findOne).toHaveBeenCalledWith({
+        id: 'random id',
+      });
+      expect(result).toEqual({
+        firstName: 'Andy',
+        lastName: 'Cathcart',
+      });
+    });
   });
 
   describe('createStudent', () => {

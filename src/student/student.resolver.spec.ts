@@ -18,6 +18,8 @@ describe('StudentResolver', () => {
           provide: StudentService,
           useValue: {
             createStudent: jest.fn().mockReturnValue(mockStudent),
+            getStudent: jest.fn().mockReturnValue(mockStudent),
+            getStudents: jest.fn().mockReturnValue([mockStudent]),
           },
         },
       ],
@@ -30,6 +32,22 @@ describe('StudentResolver', () => {
     expect(studentResolver).toBeDefined();
   });
 
+  describe('getStudents', () => {
+    it('should call studentService.getStudents', () => {
+      const result = studentResolver.getStudents();
+
+      expect(result).resolves.toEqual([mockStudent]);
+    });
+  });
+
+  describe('getStudent', () => {
+    it('should call studentService.getStudent', () => {
+      const result = studentResolver.getStudent('unimportant-id');
+
+      expect(result).resolves.toEqual(mockStudent);
+    });
+  });
+
   describe('createStudent', () => {
     it('should call studentService.createStudent', () => {
       const createStudentDto = {
@@ -39,7 +57,7 @@ describe('StudentResolver', () => {
 
       const result = studentResolver.createStudent(createStudentDto);
 
-      expect(result).toEqual(mockStudent);
+      expect(result).resolves.toEqual(mockStudent);
     });
   });
 });

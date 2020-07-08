@@ -9,17 +9,17 @@ export class LessonResolver {
   constructor(private lessonService: LessonService) {}
 
   @Query(() => [LessonType])
-  getLessons(): Promise<Lesson[]> {
+  async getLessons(): Promise<Lesson[]> {
     return this.lessonService.getLessons();
   }
 
   @Query(() => LessonType)
-  getLesson(@Args('id') id: string): Promise<Lesson> {
+  async getLesson(@Args('id') id: string): Promise<Lesson> {
     return this.lessonService.getLesson(id);
   }
 
   @Mutation(() => LessonType)
-  createLesson(
+  async createLesson(
     @Args('createLessonInput') createLessonInput: CreateLessonInput,
   ): Promise<Lesson> {
     return this.lessonService.createLesson(createLessonInput);

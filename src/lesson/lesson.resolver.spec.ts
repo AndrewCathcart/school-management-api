@@ -37,7 +37,7 @@ describe('LessonResolver', () => {
     it('should call lessonService.getLessons', () => {
       const result = lessonResolver.getLessons();
 
-      expect(result).toEqual([mockLesson]);
+      expect(result).resolves.toEqual([mockLesson]);
     });
   });
 
@@ -45,7 +45,7 @@ describe('LessonResolver', () => {
     it('should call lessonService.getLesson', () => {
       const result = lessonResolver.getLesson('unimportant-id');
 
-      expect(result).toEqual(mockLesson);
+      expect(result).resolves.toEqual(mockLesson);
     });
   });
 
@@ -59,7 +59,7 @@ describe('LessonResolver', () => {
 
       const result = lessonResolver.createLesson(createLessonDto);
 
-      expect(result).toEqual(mockLesson);
+      expect(result).resolves.toEqual(mockLesson);
     });
   });
 });
