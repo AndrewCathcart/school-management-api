@@ -8,7 +8,7 @@ import { CreateLessonInput } from './lesson.input';
 jest.mock('uuid');
 
 const findOneMock = {
-  name: 'findOneCat',
+  name: 'findOneName',
   startDate: 'findOneStart',
   endDate: 'findOneEnd',
 };
@@ -31,7 +31,7 @@ describe('LessonService', () => {
           provide: getRepositoryToken(Lesson),
           useValue: {
             create: jest.fn(),
-            save: jest.fn().mockReturnValue('new cat'),
+            save: jest.fn().mockReturnValue('new lesson'),
             findOne: jest.fn().mockReturnValue(findOneMock),
             find: jest.fn().mockReturnValue(findMock),
           },
@@ -66,7 +66,7 @@ describe('LessonService', () => {
         id: 'random id',
       });
       expect(result).toEqual({
-        name: 'findOneCat',
+        name: 'findOneName',
         startDate: 'findOneStart',
         endDate: 'findOneEnd',
       });
@@ -81,6 +81,7 @@ describe('LessonService', () => {
         endDate: 'TestEndDate',
       };
       uuid.mockReturnValue('testid');
+
       const result = await lessonService.createLesson(createLessonInput);
 
       expect(lessonRepository.create).toHaveBeenCalledWith({
@@ -90,7 +91,7 @@ describe('LessonService', () => {
         endDate: createLessonInput.endDate,
       });
       expect(lessonRepository.save).toHaveBeenCalledTimes(1);
-      expect(result).toEqual('new cat');
+      expect(result).toEqual('new lesson');
     });
   });
 });
