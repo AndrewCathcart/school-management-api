@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { LessonResolver } from './lesson.resolver';
 import { LessonService } from './lesson.service';
+import { StudentService } from '../student/student.service';
 
 const mockLesson = {
   name: 'TestName',
@@ -22,6 +23,10 @@ describe('LessonResolver', () => {
             getLesson: jest.fn().mockReturnValue(mockLesson),
             getLessons: jest.fn().mockReturnValue([mockLesson]),
           },
+        },
+        {
+          provide: StudentService,
+          useValue: {},
         },
       ],
     }).compile();
@@ -55,6 +60,7 @@ describe('LessonResolver', () => {
         name: 'TestName',
         startDate: 'TestStartDate',
         endDate: 'TestEndDate',
+        students: [],
       };
 
       const result = lessonResolver.createLesson(createLessonDto);

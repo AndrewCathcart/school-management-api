@@ -79,6 +79,7 @@ describe('LessonService', () => {
         name: 'TestName',
         startDate: 'TestStartDate',
         endDate: 'TestEndDate',
+        students: [],
       };
       uuid.mockReturnValue('testid');
 
@@ -89,6 +90,7 @@ describe('LessonService', () => {
         name: createLessonInput.name,
         startDate: createLessonInput.startDate,
         endDate: createLessonInput.endDate,
+        students: [],
       });
       expect(lessonRepository.save).toHaveBeenCalledTimes(1);
       expect(result).toEqual('new lesson');
